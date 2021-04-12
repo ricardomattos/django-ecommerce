@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block container %}
+    <div class="page-header">
+        <h1>Fale conosco</h1>
+        {% if success %}
+            <div class="alert alert-success">
+                Mensagem enviada com sucesso
+            </div>
+        {% endif %}
+        <form class="form-horizontal" action="" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <!-- Alguns navegadores não aceitam fields com a label required
+                     serem enviados vazios para o navegador. Com isso os erros de cada campo
+                     podem nao aparecer.
+                     Obs: remover required do input
+                -->
+                {% for field in form %}
+                    <div class="form-group {% if field.errors %} has-error {% endif %}">
+                      <label for="{{ field.auto_id }}" class="col-md-3 control-label">{{ field.label }}</label>
+                      <div class="col-md-9">
+                        {% render_field field class='form-control' %}
+                        {% for error in field.errors %}
+                            <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                    </div>
+                {% endfor %}
+                <div class="form-group">
+                  <div class="col-md-9 col-md-offset-3">
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                  </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
